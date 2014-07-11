@@ -1,0 +1,33 @@
+{
+  "name": "toobusy-middleware",
+  "version": "0.0.1",
+  "description": "Express middleware that blocks requests when the process is to busy.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mkretschek/toobusy-middleware"
+  },
+  "optionalDependencies": {
+    "toobusy" : "^0.2.4"
+  },
+  "keywords": [
+    "toobusy",
+    "middleware",
+    "express",
+    "expressjs",
+    "high",
+    "load",
+    "traffic",
+    "busy",
+    "503"
+  ],
+  "author": "Mathias Kretschek <mathias@kretschek.com.br> (http://mathias.ms/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mkretschek/toobusy-middleware/issues"
+  },
+  "homepage": "https://github.com/mkretschek/toobusy-middleware"
+}
