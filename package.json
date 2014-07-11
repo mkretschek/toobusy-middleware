@@ -11,7 +11,7 @@
     "url": "https://github.com/mkretschek/toobusy-middleware"
   },
   "optionalDependencies": {
-    "toobusy" : "^0.2.4"
+    "toobusy": "^0.2.4"
   },
   "keywords": [
     "toobusy",
@@ -29,5 +29,17 @@
   "bugs": {
     "url": "https://github.com/mkretschek/toobusy-middleware/issues"
   },
-  "homepage": "https://github.com/mkretschek/toobusy-middleware"
+  "homepage": "https://github.com/mkretschek/toobusy-middleware",
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "codeclimate-test-reporter": "0.0.3",
+    "coveralls": "^2.11.1",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-mocha-test": "^0.11.0",
+    "istanbul": "^0.3.0",
+    "mocha": "^1.20.1",
+    "sinon": "^1.10.3",
+    "sinon-chai": "^2.5.0"
+  }
 }
