@@ -26,6 +26,21 @@
   }
 
 
+  // If toobusy is not installed (or not loaded for whatever reason),
+  // create a dummy module and expose a fake shutdown function.
+  if (!toobusy) {
+    exports = module.exports = function () {
+      return function (req, res, next) {
+        next();
+      };
+    };
+
+    exports.shutdown = function () {};
+
+    return;
+  }
+
+
   /**
    * Keeps track of application/server's load and responds early with an
    * appropriate 503 status if it's too busy, skipping requests until the
@@ -49,13 +64,6 @@
    */
   exports = module.exports = function (options) {
     options = options || {};
-
-    // Toobusy is not installed, return a dummy middleware
-    if (!toobusy) {
-      return function (req, res, next) {
-        next();
-      };
-    }
 
     if (options.maxLag !== undefined) {
       toobusy.maxLag(options.maxLag);
