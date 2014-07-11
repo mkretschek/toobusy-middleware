@@ -55,7 +55,7 @@ The middleware accepts the following options:
 
 * `message`: Message to be displayed/returned when the server is too busy to
   process the request. If it's an object or an array, the response will be
-  sent as JSON. Otherwise, it's sent as 'text/html'.
+  sent as JSON. Otherwise, it's sent as `'text/html'`.
 
 ```js
 app.use(toobusy({
@@ -76,12 +76,11 @@ app.use(toobusy({
 License
 -------
 
-Since the heavy work here was done by [Lloyd Hilaiel][lloyd], I'm keeping the
-same license he chose for the original [toobusy][]: [WTFPL][]
+This project is licensed under an MIT license. See the `LICENSE` file for
+more details.
 
 
 [express]: http://expressjs.com/
 [lloyd]: https://github.com/lloyd
 [maxlag]: https://github.com/lloyd/node-toobusy#tunable-parameters
 [toobusy]: https://github.com/lloyd/node-toobusy
-[WTFPL]: http://wtfpl.org/
