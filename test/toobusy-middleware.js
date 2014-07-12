@@ -269,6 +269,36 @@
 
     }); // without toobusy
 
+
+
+    it('re-throws unexpected errors when the module is require()\'d',
+      function () {
+        unloadToobusyMiddleware();
+
+        var load = Module._load;
+
+        sinon
+          .stub(Module, '_load', function (request, parent, isMain) {
+            var err;
+
+            if (request === 'toobusy') {
+              err = new Error('Unexpected error');
+              throw(err);
+            }
+
+            return load.call(Module, request, parent, isMain);
+          });
+
+
+        function requireToobusyMiddleware() {
+          require('../');
+        }
+
+        expect(requireToobusyMiddleware).to.throw('Unexpected error');
+
+        Module._load.restore();
+      });
+
   }); // toobusy-middleware
 
 })();
