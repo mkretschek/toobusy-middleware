@@ -1,0 +1,13 @@
+node_modules/
+test/
+logs/
+
+Gruntfile.js
+.travis.yml
+.npmignore
+.git*
+.jshintrc
+*.swp
+*.log
+*.tgz
+
