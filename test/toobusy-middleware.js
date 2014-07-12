@@ -5,10 +5,12 @@
   var expect = require('chai').expect;
   var sinon = require('sinon');
 
+
   function unloadToobusyMiddleware() {
-    delete require.cache['toobusy-middleware'];
+    delete require.cache[require.resolve('../')];
     delete require.cache.toobusy;
   }
+
 
   describe('toobusy-middleware', function () {
     var req;
@@ -21,17 +23,21 @@
       };
     });
 
+
     before(function () {
       req = {};
     });
+
 
     before(function () {
       next = sinon.spy();
     });
 
+
     afterEach(function () {
       res.send.reset();
     });
+
 
     afterEach(function () {
       next.reset();
@@ -185,7 +191,7 @@
 
             if (request === 'toobusy') {
               err = new Error();
-              err.code('MODULE_NOT_FOUND');
+              err.code = 'MODULE_NOT_FOUND';
               throw(err);
             }
 
@@ -207,6 +213,7 @@
       it('exposes a function', function () {
         expect(toobusyMiddleware).to.be.a('function');
       });
+
 
       it('returns a middleware', function () {
         var middleware = toobusyMiddleware();
