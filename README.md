@@ -1,7 +1,7 @@
 toobusy-middleware
 ==================
 
-[![NPM version](https://badge.fury.io/js/toobusy-middleware.png)](http://badge.fury.io/js/toobusy-middleware)
+[![NPM version](https://badge.fury.io/js/toobusy-middleware.svg)](http://badge.fury.io/js/toobusy-middleware)
 [![Build Status](https://travis-ci.org/mkretschek/toobusy-middleware.svg)](https://travis-ci.org/mkretschek/toobusy-middleware)
 [![Coverage Status](https://coveralls.io/repos/mkretschek/toobusy-middleware/badge.png)](https://coveralls.io/r/mkretschek/toobusy-middleware)
 [![Code Climate](https://codeclimate.com/github/mkretschek/toobusy-middleware.png)](https://codeclimate.com/github/mkretschek/toobusy-middleware)
