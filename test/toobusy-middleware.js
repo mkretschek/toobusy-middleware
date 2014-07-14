@@ -1,14 +1,14 @@
 (function () {
   'use strict';
 
-  var Module = require('module');
   var expect = require('chai').expect;
   var sinon = require('sinon');
+  var barney = require('barney');
 
 
   function unloadToobusyMiddleware() {
-    delete require.cache[require.resolve('../')];
-    delete require.cache.toobusy;
+    barney.unload('../');
+    barney.unload('toobusy', false);
   }
 
 
@@ -16,6 +16,7 @@
     var req;
     var res;
     var next;
+
 
     before(function () {
       res = {
@@ -31,6 +32,14 @@
 
     before(function () {
       next = sinon.spy();
+    });
+
+    before(function () {
+      barney.hook.enable();
+    });
+
+    after(function () {
+      barney.hook.disable();
     });
 
 
@@ -59,24 +68,19 @@
       });
 
       before(function () {
-        var load = Module._load;
-
-        sinon
-          .stub(Module, '_load', function (request, parent, isMain) {
-            if (request === 'toobusy') {
-              return toobusyMock;
-            }
-
-            return load.call(Module, request, parent, isMain);
-          });
-      });
-
-      after(function () {
-        Module._load.restore();
+        barney.hook(function (request) {
+          if (request === 'toobusy') {
+            return toobusyMock;
+          }
+        });
       });
 
       before(function () {
         toobusyMiddleware = require('../');
+      });
+
+      after(function () {
+        barney.unhook();
       });
 
       afterEach(function () {
@@ -183,20 +187,11 @@
 
 
       before(function () {
-        var load = Module._load;
-
-        sinon
-          .stub(Module, '_load', function (request, parent, isMain) {
-            var err;
-
-            if (request === 'toobusy') {
-              err = new Error();
-              err.code = 'MODULE_NOT_FOUND';
-              throw(err);
-            }
-
-            return load.call(Module, request, parent, isMain);
-          });
+        barney.hook(function (request) {
+          if (request === 'toobusy') {
+            barney.moduleNotFound();
+          }
+        });
       });
 
 
@@ -204,9 +199,8 @@
         toobusyMiddleware = require('../');
       });
 
-
       after(function () {
-        Module._load.restore();
+        barney.unhook();
       });
 
 
@@ -275,20 +269,11 @@
       function () {
         unloadToobusyMiddleware();
 
-        var load = Module._load;
-
-        sinon
-          .stub(Module, '_load', function (request, parent, isMain) {
-            var err;
-
-            if (request === 'toobusy') {
-              err = new Error('Unexpected error');
-              throw(err);
-            }
-
-            return load.call(Module, request, parent, isMain);
-          });
-
+        barney.hook(function (request) {
+          if (request === 'toobusy') {
+            throw(new Error('Unexpected error'));
+          }
+        });
 
         function requireToobusyMiddleware() {
           require('../');
@@ -296,7 +281,7 @@
 
         expect(requireToobusyMiddleware).to.throw('Unexpected error');
 
-        Module._load.restore();
+        barney.unhook();
       });
 
   }); // toobusy-middleware
