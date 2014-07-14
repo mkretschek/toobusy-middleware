@@ -1,9 +1,16 @@
 (function () {
   'use strict';
 
+  var Module = require('module');
   var expect = require('chai').expect;
   var sinon = require('sinon');
   var barney = require('barney');
+
+
+  function unloadModule() {
+    Module._cache[Module._resolveFilename('../')];
+    require.cache[require.resolve('../')];
+  }
 
 
   describe('toobusy-middleware', function () {
@@ -51,6 +58,7 @@
       var toobusyMock;
       var toobusyMiddleware;
 
+      before(unloadModule);
 
       before(function () {
         toobusyMock = sinon.stub();
@@ -174,6 +182,7 @@
     describe('without toobusy', function () {
       var toobusyMiddleware;
 
+      before(unloadModule);
 
       before(function () {
         barney.hook(function (request) {
@@ -185,7 +194,6 @@
 
 
       before(function () {
-        require.cache[require.resolve('../')];
         toobusyMiddleware = require('../');
       });
 
@@ -257,6 +265,8 @@
 
     it('re-throws unexpected errors when the module is require()\'d',
       function () {
+        unloadModule();
+
         barney.hook(function (request) {
           if (request === 'toobusy') {
             throw(new Error('Unexpected error'));
