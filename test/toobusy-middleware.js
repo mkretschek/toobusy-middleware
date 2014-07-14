@@ -1,15 +1,13 @@
 (function () {
   'use strict';
 
-  var Module = require('module');
   var expect = require('chai').expect;
   var sinon = require('sinon');
   var barney = require('barney');
 
 
   function unloadModule() {
-    Module._cache[Module._resolveFilename('../')];
-    require.cache[require.resolve('../')];
+    delete require.cache[require.resolve('../')];
   }
 
 
