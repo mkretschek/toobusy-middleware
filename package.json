@@ -1,6 +1,6 @@
 {
   "name": "toobusy-middleware",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Express middleware that blocks requests when the process is to busy.",
   "main": "index.js",
   "scripts": {
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/mkretschek/toobusy-middleware",
   "devDependencies": {
-    "barney": "0.0.1",
+    "barney": "^0.0.1",
     "chai": "^1.9.1",
     "codeclimate-test-reporter": "0.0.3",
     "coveralls": "^2.11.1",
