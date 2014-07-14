@@ -185,6 +185,7 @@
 
 
       before(function () {
+        require.cache[require.resolve('../')];
         toobusyMiddleware = require('../');
       });
 
