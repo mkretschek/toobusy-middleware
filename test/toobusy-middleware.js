@@ -6,12 +6,6 @@
   var barney = require('barney');
 
 
-  function unloadToobusyMiddleware() {
-    barney.unload('../');
-    barney.unload('toobusy', false);
-  }
-
-
   describe('toobusy-middleware', function () {
     var req;
     var res;
@@ -35,11 +29,11 @@
     });
 
     before(function () {
-      barney.hook.enable();
+      barney.enable();
     });
 
     after(function () {
-      barney.hook.disable();
+      barney.disable();
     });
 
 
@@ -57,8 +51,6 @@
       var toobusyMock;
       var toobusyMiddleware;
 
-
-      before(unloadToobusyMiddleware);
 
       before(function () {
         toobusyMock = sinon.stub();
@@ -80,7 +72,7 @@
       });
 
       after(function () {
-        barney.unhook();
+        barney.clear();
       });
 
       afterEach(function () {
@@ -183,9 +175,6 @@
       var toobusyMiddleware;
 
 
-      before(unloadToobusyMiddleware);
-
-
       before(function () {
         barney.hook(function (request) {
           if (request === 'toobusy') {
@@ -200,7 +189,7 @@
       });
 
       after(function () {
-        barney.unhook();
+        barney.clear();
       });
 
 
@@ -267,8 +256,6 @@
 
     it('re-throws unexpected errors when the module is require()\'d',
       function () {
-        unloadToobusyMiddleware();
-
         barney.hook(function (request) {
           if (request === 'toobusy') {
             throw(new Error('Unexpected error'));
@@ -281,7 +268,7 @@
 
         expect(requireToobusyMiddleware).to.throw('Unexpected error');
 
-        barney.unhook();
+        barney.clear();
       });
 
   }); // toobusy-middleware
