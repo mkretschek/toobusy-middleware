@@ -1,3 +1,9 @@
+0.1.2 / 2014-07-14
+==================
+
+* improved: Updated barney version and adjusted tests accordingly.
+
+
 0.1.1 / 2014-07-13
 ==================
 
