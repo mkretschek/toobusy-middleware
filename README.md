@@ -25,6 +25,11 @@ Usage
 npm install --save toobusy-middleware
 ```
 
+**NOTE:** There may be some issues getting `toobusy` to work in Windows environments. If
+that's your case and you just want to get it working for **development**, you can
+make `toobusy` an `optionalDependency` in the `package.json` and the middleware
+will act as a `noop`.
+
 In your application:
 
 ```js
