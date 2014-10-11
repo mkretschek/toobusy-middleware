@@ -10,7 +10,7 @@
     "type": "git",
     "url": "https://github.com/mkretschek/toobusy-middleware"
   },
-  "optionalDependencies": {
+  "dependencies": {
     "toobusy": "^0.2.4"
   },
   "keywords": [
