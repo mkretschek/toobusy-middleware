@@ -1,3 +1,10 @@
+0.1.4 / 2014-10-11
+==================
+
+* fixed: deprecation message for `res.send()` API
+* changed: made `toobusy` a required dependency
+
+
 0.1.3 / 2014-07-14
 ==================
 
