@@ -73,7 +73,7 @@
 
     return function (req, res, next) {
       if (toobusy()) {
-        res.send(503, message);
+        res.status(503).send(message);
       } else {
         next();
       }

@@ -19,8 +19,11 @@
 
     before(function () {
       res = {
+        status : sinon.stub(),
         send : sinon.stub()
       };
+
+      res.status.returns(res);
     });
 
 
@@ -43,6 +46,7 @@
 
 
     afterEach(function () {
+      res.status.reset();
       res.send.reset();
     });
 
@@ -114,7 +118,8 @@
           function () {
             toobusyMock.returns(true);
             middleware(req, res, next);
-            expect(res.send).to.have.been.calledWith(503);
+            expect(res.status).to.have.been.calledWith(503);
+            expect(res.send).to.have.been.called;
           });
 
 
@@ -133,7 +138,7 @@
           var middleware = toobusyMiddleware(opts);
 
           middleware(req, res, next);
-          expect(res.send).to.have.been.calledWith(503, opts.message);
+          expect(res.send).to.have.been.calledWith(opts.message);
         });
 
 
