@@ -83,7 +83,7 @@
     return function (req, res, next) {
       if (toobusy()) {
         if (handler) {
-          handler(req, res);
+          handler(req, res, next);
         }
 
         if (!res.headerSent) {
