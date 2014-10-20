@@ -74,6 +74,9 @@ The middleware accepts two parameters:
     * `message`: Message to be displayed/returned when the server is too busy to
       process the request. If it's an object or an array, the response will be
       sent as JSON. Otherwise, it's sent as `'text/html'`.
+      
+    * `status`: HTTP status code to send when the server is too busy. Defaults
+      to status code `503` (Service Unavailable).
 
 
 Examples
@@ -91,7 +94,8 @@ Simple customization:
 ```js
 app.use(toobusy({
   maxLag : 100,
-  message : 'Woah! Too busy here! Try again later.'
+  message : 'Woah! Too busy here! Try again later.',
+  status : 500
 });
 ```
 

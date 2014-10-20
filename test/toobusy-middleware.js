@@ -143,6 +143,22 @@
         });
 
 
+        it('if set, sends the status defined in the options if too busy',
+          function () {
+            toobusyMock.returns(true);
+
+            var opts = {
+              status : 500
+            };
+
+            var middleware = toobusyMiddleware(opts);
+
+            middleware(req, res, next);
+            expect(res.status).to.have.been.calledWith(opts.status);
+            expect(res.send).to.have.been.called;
+          });
+
+
         it('sets toobusy\'s maximum lag option if set in the options',
           function () {
             var opts = {

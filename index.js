@@ -78,6 +78,7 @@
       toobusy.maxLag(options.maxLag);
     }
 
+    var status = options.status || 503;
     var message = options.message || 'Too busy!';
 
     return function (req, res, next) {
@@ -87,7 +88,7 @@
         }
 
         if (!res.headerSent) {
-          res.status(503).send(message);
+          res.status(status).send(message);
         }
       } else {
         next();
