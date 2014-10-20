@@ -1,3 +1,12 @@
+0.1.5 / 2014-10-20
+==================
+
+* improved: added the `handler` parameter, allowing to take more advanced
+  actions when the server is too busy
+* improved: added the option to change the status sent when the server is
+  too busy
+
+
 0.1.4 / 2014-10-11
 ==================
 
