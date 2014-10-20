@@ -48,6 +48,7 @@
     afterEach(function () {
       res.status.reset();
       res.send.reset();
+      delete res.headerSent;
     });
 
 
@@ -185,6 +186,23 @@
 
           middleware(req, res, next);
           expect(res.send).to.not.have.been.called;
+        });
+
+
+        it('works with both handler and options', function () {
+          toobusyMock.returns(true);
+
+          var handler = sinon.stub();
+
+          var opts = {
+            message : 'Test message'
+          };
+
+          var middleware = toobusyMiddleware(handler, opts);
+          middleware(req, res, next);
+
+          expect(handler).to.have.been.calledOnce;
+          expect(res.send).to.have.been.calledWith(opts.message);
         });
 
       }); // with toobusy middleware
