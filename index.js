@@ -62,18 +62,34 @@
    *  load and decides whether to process the request or skip it with an
    *  appropriate status.
    */
-  exports = module.exports = function (options) {
+  exports = module.exports = function (handler, options) {
+    if (
+      // Make options really optional allowing to pass just the handler
+      arguments.length === 1 &&
+      typeof handler === 'object'
+    ) {
+      options = handler;
+      handler = null;
+    }
+
     options = options || {};
 
     if (options.maxLag !== undefined) {
       toobusy.maxLag(options.maxLag);
     }
 
+    var status = options.status || 503;
     var message = options.message || 'Too busy!';
 
     return function (req, res, next) {
       if (toobusy()) {
-        res.status(503).send(message);
+        if (handler) {
+          handler(req, res, next);
+        }
+
+        if (!res.headerSent) {
+          res.status(status).send(message);
+        }
       } else {
         next();
       }

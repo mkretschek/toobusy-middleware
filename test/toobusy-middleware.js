@@ -48,6 +48,7 @@
     afterEach(function () {
       res.status.reset();
       res.send.reset();
+      delete res.headerSent;
     });
 
 
@@ -142,6 +143,22 @@
         });
 
 
+        it('if set, sends the status defined in the options if too busy',
+          function () {
+            toobusyMock.returns(true);
+
+            var opts = {
+              status : 500
+            };
+
+            var middleware = toobusyMiddleware(opts);
+
+            middleware(req, res, next);
+            expect(res.status).to.have.been.calledWith(opts.status);
+            expect(res.send).to.have.been.called;
+          });
+
+
         it('sets toobusy\'s maximum lag option if set in the options',
           function () {
             var opts = {
@@ -158,6 +175,50 @@
 
           middleware(req, res, next);
           expect(next).to.have.been.called;
+        });
+
+
+        it('calls the handler before sending the content', function () {
+          toobusyMock.returns(true);
+
+          var handler = sinon.stub();
+          var middleware = toobusyMiddleware(handler);
+
+          middleware(req, res, next);
+          expect(handler).to.have.been.calledBefore(res.send);
+        });
+
+
+        it('does not send content if the handler does', function () {
+          toobusyMock.returns(true);
+
+          var handler = function () {
+            // When `res.send()` is called within the handler, `res.headerSent`
+            // will be set to true. This handler just simulates that process.
+            res.headerSent = true;
+          };
+
+          var middleware = toobusyMiddleware(handler);
+
+          middleware(req, res, next);
+          expect(res.send).to.not.have.been.called;
+        });
+
+
+        it('works with both handler and options', function () {
+          toobusyMock.returns(true);
+
+          var handler = sinon.stub();
+
+          var opts = {
+            message : 'Test message'
+          };
+
+          var middleware = toobusyMiddleware(handler, opts);
+          middleware(req, res, next);
+
+          expect(handler).to.have.been.calledOnce;
+          expect(res.send).to.have.been.calledWith(opts.message);
         });
 
       }); // with toobusy middleware
@@ -180,6 +241,10 @@
         });
       }); // with toobusy .shutdown()
     }); // with toobusy
+
+
+
+
 
 
     describe('without toobusy', function () {

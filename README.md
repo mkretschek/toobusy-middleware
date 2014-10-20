@@ -55,26 +55,54 @@ process.on('SIGINT', function () {
 ```
 
 
-Options
--------
+Parameters
+----------
 
-The middleware accepts the following options:
+The middleware accepts two parameters:
 
-* `maxLag`: Maximum time (in ms) the server can be behind before the
-  process is considered to be overloaded. See [`toobusy`'s tunable parameters]
-  [maxlag] for more info.
+* `handler` (optional): A function that will be called before sending any
+  headers, allowing you to customize how the request is handled. Use this
+  to call external services (bring more nodes up, notify someone, etc) or to
+  override the default response sent to the user.
 
-* `message`: Message to be displayed/returned when the server is too busy to
-  process the request. If it's an object or an array, the response will be
-  sent as JSON. Otherwise, it's sent as `'text/html'`.
+* `options` (optional): Middleware's settings:
+
+    * `maxLag`: Maximum time (in ms) the server can be behind before the
+      process is considered to be overloaded. See [`toobusy`'s tunable parameters]
+      [maxlag] for more info.
+
+    * `message`: Message to be displayed/returned when the server is too busy to
+      process the request. If it's an object or an array, the response will be
+      sent as JSON. Otherwise, it's sent as `'text/html'`.
+      
+    * `status`: HTTP status code to send when the server is too busy. Defaults
+      to status code `503` (Service Unavailable).
+
+
+Examples
+--------
+
+Uses default behavior.
+
+```js
+app.use(toobusy());
+```
+
+
+Simple customization:
 
 ```js
 app.use(toobusy({
   maxLag : 100,
-  message : 'Woah! Too busy here! Try again later.'
+  message : 'Woah! Too busy here! Try again later.',
+  status : 500
 });
+```
 
-// This sends a JSON response
+
+Sending a JSON response instead of HTML:
+
+```js
 app.use(toobusy({
   message : {
     message : 'Too busy!',
@@ -83,6 +111,35 @@ app.use(toobusy({
 });
 ```
 
+Taking action during high load:
+
+```js
+// Sends the default response after taking the required action
+app.use(toobusy(function () {
+  addEmergencyNodes();
+  notifySomeone();
+}));
+```
+
+Overriding the default response:
+
+```js
+app.use(toobusy(function (req, res, next) {
+  res.status(503).sendFile('error/toobusy.html');
+}));
+```
+
+Using both handler and options:
+
+```js
+function notifySomeone() {
+  doSomething();
+}
+
+app.use(toobusy(notifySomeone, {
+  maxLag : 75
+}));
+```
 
 License
 -------
