@@ -160,6 +160,33 @@
           expect(next).to.have.been.called;
         });
 
+
+        it('calls the handler before sending the content', function () {
+          toobusyMock.returns(true);
+
+          var handler = sinon.stub();
+          var middleware = toobusyMiddleware(handler);
+
+          middleware(req, res, next);
+          expect(handler).to.have.been.calledBefore(res.send);
+        });
+
+
+        it('does not send content if the handler does', function () {
+          toobusyMock.returns(true);
+
+          var handler = function () {
+            // When `res.send()` is called within the handler, `res.headerSent`
+            // will be set to true. This handler just simulates that process.
+            res.headerSent = true;
+          };
+
+          var middleware = toobusyMiddleware(handler);
+
+          middleware(req, res, next);
+          expect(res.send).to.not.have.been.called;
+        });
+
       }); // with toobusy middleware
 
 
@@ -180,6 +207,10 @@
         });
       }); // with toobusy .shutdown()
     }); // with toobusy
+
+
+
+
 
 
     describe('without toobusy', function () {
