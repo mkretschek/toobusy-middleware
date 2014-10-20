@@ -62,17 +62,17 @@
    *  load and decides whether to process the request or skip it with an
    *  appropriate status.
    */
-  exports = module.exports = function (options, handler) {
+  exports = module.exports = function (handler, options) {
     if (
       // Make options really optional allowing to pass just the handler
       arguments.length === 1 &&
-      typeof options === 'function'
+      typeof handler === 'object'
     ) {
-      handler = options;
-      options = {};
-    } else {
-      options = options || {};
+      options = handler;
+      handler = null;
     }
+
+    options = options || {};
 
     if (options.maxLag !== undefined) {
       toobusy.maxLag(options.maxLag);
